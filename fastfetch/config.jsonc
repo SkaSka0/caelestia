@@ -1,65 +1,239 @@
 {
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": null,
-    "display": {
-        "separator": "  ",
-        "color": "white",
-        "constants": ["\u001b[37m", "\u001b[38;5;16m", "\u001b[38;5;17m", "\u001b[38;5;18m"]
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": null,
+  "display": {
+    "separator": " ",  // Separator between key and value
+    "color": {
+        "key": "green",   // Color for keys
+        "value": "white",  // Color for values
+        "title": "green"     // Color for title keys
     },
-    "modules": [
-        "break",
-        {
-            "type": "custom",
-            "key": "╭───────────────────────────────────╮"
-        },
-        {
-            "type": "kernel",
-            "key": "│ {$2}{$1}  kernel",
-            "format": "{$2}{release>22}{$1} │"
-        },
-        {
-            "type": "command",
-            "key": "│   uptime",
-            "text": "uptime -p | cut -d ' ' -f 2-",
-            "format": "{>22} │"
-        },
-        {
-            "type": "shell",
-            "key": "│ {$2}{$1}  shell ",
-            "format": "{$2}{pretty-name>22}{$1} │"
-        },
-        {
-            "type": "command",
-            "key": "│ {$3}{$1}  mem   ",
-            "text": "free -m | awk 'NR==2{printf \"%.2f GiB / %.2f GiB\",$3/1024,$2/1024}'",
-            "format": "{$3}{>22}{$1} │"
-        },
-        {
-            "type": "packages",
-            "key": "│   pkgs  ",
-            "format": "{all>22} │"
-        },
-        {
-            "type": "command",
-            "key": "│ {$2}{$1}  user  ",
-            "text": "echo $USER",
-            "format": "{$2}{>22}{$1} │"
-        },
-        {
-            "type": "command",
-            "key": "│   hname ",
-            "text": "hostnamectl hostname",
-            "format": "{>22} │"
-        },
-        {
-            "type": "os",
-            "key": "│ {$4}󰻀{$1}  distro",
-            "format": "{$4}{pretty-name>22}{$1} │"
-        },
-        {
-            "type": "custom",
-            "key": "╰───────────────────────────────────╯"
-        },
-        "break"
-    ]
-}
+    "key": {
+        // "width": 12       // Aligns keys to this width
+        // "type": "both"   // string, icon, both, or none
+    },
+    "bar": {
+        "width": 10,       // Width of percentage bars
+        "char": {
+            "elapsed": "▰", // Character for elapsed portion
+            "total": "▱"    // Character for total portion
+        }
+    }
+  },
+  "modules": [
+
+    "break",
+
+    {
+      "type": "title",
+      "key": "ホスト"
+    },
+
+    "break",
+
+    // ─────────────────────────────
+    // 🧬 SYSTEM IDENTITY
+    // ─────────────────────────────
+    {
+      "type": "os",
+      "key": "╭─ OS",
+      "keyColor": "green",
+      "format": "{pretty-name} {arch} ({build-id})"
+    },
+    {
+      "type": "kernel",
+      "key": "├─ Kernel",
+      "format": "{1} {2}",
+      "keyColor": "green"
+    },
+    {
+      "type": "packages",
+      "key": "├─󰮯 Packages",
+      "keyColor": "green"
+    },
+    {
+      "type": "terminal",
+      "key": "├─ Terminal",
+      "keyColor": "green"
+    },
+    {
+      "type": "shell",
+      "key": "├─ Shell",
+      "keyColor": "green"
+    },
+    {
+      "type": "terminalfont",
+      "key": "├─ Terminal Font",
+      "keyColor": "green"
+    },
+    {
+      "type": "uptime",
+      "key": "╰─󰅐 Uptime",
+      "keyColor": "green"
+    },
+
+    "break",
+
+    // ─────────────────────────────
+    // 🖥️ DESKTOP / UI ENVIRONMENT
+    // ─────────────────────────────
+    {
+      "type": "de",
+      "key": "╭─ Desktop Env",
+      // "format": "{1} ({2})",
+      "keyColor": "green"
+    },
+    {
+      "type": "wm",
+      "key": "├─ Window Manager",
+      // "format": "{2} ({4})",
+      "keyColor": "green"
+    },
+    {
+      "type": "lm",
+      "key": "├─󰧨 Login Manager",
+      "keyColor": "green"
+    },
+    {
+      "type": "theme",
+      "key": "├─󰉼 Theme",
+      "keyColor": "green"
+    },
+    {
+      "type": "cursor",
+      "key": "├─󰇀 Cursor",
+      "keyColor": "green"
+    },
+    {
+      "type": "icons",
+      "key": "╰─󰀻 Icons",
+      "keyColor": "green"
+    },
+
+    "break",
+
+    // ─────────────────────────────
+    // ⚙️ HARDWARE CORE
+    // ─────────────────────────────
+    {
+      "type": "host",
+      "key": "╭─ Machine",
+      "format": "{2} ({1})",
+      "keyColor": "green"
+    },
+    {
+      "type": "cpu",
+      "key": "├─󰍛 CPU",
+      "keyColor": "green",
+      "format": "{name} ({cores-physical}C/{cores-logical}T) @{freq-base}-{freq-max} {march}"
+    },
+    {
+      "type": "gpu",
+      "key": "├─󰘚 GPU",
+      "format": "{name} [{type}]",
+      "keyColor": "green"
+    },
+    {
+      "type": "display",
+      "key": "├─󰍹 Display",
+      "keyColor": "green"
+    },
+    {
+      "type": "memory",
+      "key": "├─󰑭 RAM ",
+      "keyColor": "green",
+      "format": "{percentage-bar} {used} / {total} ({#green}{percentage}{#})",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    {
+      "type": "swap",
+      "key": "├─󰓡 Swap",
+      "keyColor": "green",
+      "format": "{percentage-bar} {used} / {total} ({#green}{percentage}{#})",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    {
+      "type": "disk",
+      "key": "╰─ Disk",
+      "keyColor": "green",
+      "format": "{size-percentage-bar} {size-used} / {size-total} ({#green}{size-percentage}{#}) - {filesystem}",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+
+    "break",
+
+    // ─────────────────────────────
+    // 🔋 POWER / DEVICE STATUS
+    // ─────────────────────────────
+    {
+      "type": "brightness",
+      "key": "╭─󰃞 Brightness",
+      "keyColor": "green",
+      "format": "{percentage-bar} {#green}{percentage}{#} {?is-builtin}[Built-in]{?}",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    {
+      "type": "battery",
+      "key": "├─ Battery   ",
+      "format": "{capacity-bar} {#green}{capacity}{#} ({status})",
+      "keyColor": "green",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    {
+      "type": "bluetooth",
+      "key": "├─ Bluetooth ",
+      "format": "{battery-percentage-bar} {name} ({#green}{battery-percentage}{#})",
+      "keyColor": "green",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    {
+      "type": "poweradapter",
+      "key": "├─ Power",
+      "keyColor": "green"
+    },
+    {
+      "type": "sound",
+      "key": "╰─ Audio     ",
+      "keyColor": "green",
+      "format": "{volume-percentage-bar} {name} ({#green}{volume-percentage}{#})",
+      "percent": {
+            "type": 3,     // Show both percentage number and bar
+            "green": 30,   // Values below 30% in green
+            "yellow": 70   // 30-70% in yellow, >70% in red
+        }
+    },
+    "break",
+
+    // ─────────────────────────────
+    // 🎨 VISUAL FOOTER
+    // ─────────────────────────────
+    {
+      "type": "custom",
+      "format": "\u001b[1m\u001b[31m  \u001b[1m\u001b[32m  \u001b[1m\u001b[33m  \u001b[1m\u001b[34m  \u001b[1m\u001b[35m  \u001b[1m\u001b[36m  \u001b[1m\u001b[37m  \u001b[1m\u001b[30m       \u001b[1m\u001b[91m  \u001b[1m\u001b[92m  \u001b[1m\u001b[93m  \u001b[1m\u001b[94m  \u001b[1m\u001b[95m  \u001b[1m\u001b[96m  \u001b[1m\u001b[97m  \u001b[1m\u001b[90m"
+    }
+  ]
+}⏎             
